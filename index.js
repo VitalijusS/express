@@ -1,4 +1,5 @@
 import express from 'express';
+import { students } from './data/students.js';
 const app = express();
 const port = 3000;
 
@@ -36,6 +37,24 @@ app.get('/team/:name', (req, res) => {
         return res.send(`<h1>Team member ''${req.params.name}''</h1>`);
     }
     return res.send(`<h1>Team member ''${req.params.name}'' is not found</h1>`);
+})
+
+app.get('/students', (req, res) => {
+    let names = [];
+    for (const [student, value] of Object.entries(students)) {
+        names.push(value.name);
+    }
+    names = names.join(', ')
+    const index = names.lastIndexOf(',')
+    names = names.slice(0, index) + ' ir ' + names.slice(names.lastIndexOf(',') + 1);
+    return res.send(`Mokosi ${Object.keys(students).length} studentai: ${names}`);
+})
+app.get('/students/:studentName', (req, res) => {
+    if (Object.keys(students).includes(req.params.studentName.toLowerCase())) {
+        const studentObj = students[req.params.studentName.toLowerCase()];
+        return res.send(`Studentas, vardu ${studentObj.name} yra ${studentObj.age} metu amziaus ir yra ${studentObj.isMarried ? "" : "ne "} vedes.`)
+    }
+    return res.send(`Studento, vardu ${req.params.studentName} nera.`);
 })
 
 app.get('*', (req, res) => {
