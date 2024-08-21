@@ -19,5 +19,10 @@ export const students = {
         age: 66,
         isMarried: true,
     },
+    tomas: {
+        name: 'Tomas',
+        age: 55,
+        isMarried: true,
+    },
 
 }
